@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Volunteer Registration</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Volunteer Registration Form</h2>
+  <form id="registerForm">
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email Address" required>
+    <input type="text" name="phone" placeholder="Phone Number" required>
+    <input type="text" name="skills" placeholder="Your Skills (Optional)">
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById("registerForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        const res = await fetch("http://localhost:8080/api/volunteers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+
+        if (res.ok) {
+          alert("✅ Registered successfully!");
+          document.getElementById("registerForm").reset();
+        } else {
+          alert("❌ Registration failed. Try again.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("❌ Error connecting to server.");
+      }
+    };
+  </script>
+</body>
+</html>

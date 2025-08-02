@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - View Volunteers</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Registered Volunteers</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Skills</th>
+      </tr>
+    </thead>
+    <tbody id="dataBody"></tbody>
+  </table>
+
+  <script>
+    async function loadVolunteers() {
+      try {
+        const res = await fetch("http://localhost:8080/api/volunteers");
+        const data = await res.json();
+        const tbody = document.getElementById("dataBody");
+
+        data.forEach(vol => {
+          const row = `<tr>
+            <td>${vol.id}</td>
+            <td>${vol.name}</td>
+            <td>${vol.email}</td>
+            <td>${vol.phone}</td>
+            <td>${vol.skills}</td>
+          </tr>`;
+          tbody.innerHTML += row;
+        });
+      } catch (error) {
+        alert("⚠️ Failed to load volunteers.");
+        console.error(error);
+      }
+    }
+
+    loadVolunteers();
+  </script>
+</body>
+</html>
